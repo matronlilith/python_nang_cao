@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/product_detail.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Product Detail</title>
+</head>
+<body>
+
+    <div class="row">
+        <div class="col-md-4">
+            <a href="{{ url_for('index') }}" class="logo">
+                <img src="static\uploads\Logo_Page.jpg" alt="part">
+            </a>
+        </div>
+        
+        <div class="col-md-5 d-flex justify-content-around align-items-center btn-header-holder">
+            <form action="{{ url_for('search') }}" method="POST" class="shadow-sm search-form-container" role="search search-form">
+                <input type="search" name="search_input" id="search-box" 
+                        class="form-control form-control-dark text-bg-light border-black" 
+                        placeholder="Tìm kiếm sản phẩm" aria-label="Search">
+            </form>
+
+            <button type="button" id="cart" class="btn btn-primary">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Giỏ hàng
+            </button>
+            
+        </div>
+
+        <div class="col-md-3">
+            {% if not session.get("auth") %}
+                <a href="{{ url_for('login') }}">
+                    <button type="button" class="btn btn-warning">Đăng nhập</button>
+                </a>
+            {% else %}
+                <a href="javascript:void(0);" onclick="logout()">
+                    <button type="button" class="btn btn-warning">Đăng xuất</button>
+                </a>
+            {% endif %}
+        </div>
+        <div id="cartModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Giỏ Hàng</h5>
+                    <span class="close">&times;</span>
+                </div>
+                <div id="cart-container" class="modal-body">
+                    <!-- Nội dung giỏ hàng sẽ được JavaScript thêm vào đây -->
+                </div>
+                <div class="modal-footer" id="cart-footer">
+                    <button type="button" class="btn btn-secondary close-footer close">Đóng</button>
+                    <button type="button" class="btn btn-primary order">Thanh Toán</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="wrapper">
+        <div class="product-frame prod_data">
+            <div class="img-holder">
+                <img src="{{ url_for('static', filename='uploads/' ~ product['img']) }}" alt="Product Image">
+            </div>
+            <div class="content-holder flex flex-column">
+                <h1>{{ product['part'] }}</h1>
+                <p>{{ product['price'] }}đ</p>
+                <p>Mô tả: {{ product['describe'] }}</p>
+                <div class="flex">
+                    <div class="flex flex-column">
+                        <section class="flex items-center">
+                            <h3>Số lượng</h3>
+                            <div class="flex items-center">
+                                <div style="margin-right: 3px">
+                                <div class="input-quantity input-group">
+                                    <button class="input-group-text decrease-btn">-</button>
+                                        <input type="text" class="form-control text-center bg-white input-qty" value="1" disabled="">
+                                    <button class="input-group-text increase-btn">+</button>
+                                </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <div class="btn-holder">
+                    <button type="button" class="btn btn-primary addToCart" value="{{ product['id'] }}">Thêm vào giỏ</button>
+                </div>
+            </div>
+            
+        </div>
+        
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='scripts/cart.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/login.js') }}"></script>
+</body>
+</html>
